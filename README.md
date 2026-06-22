@@ -10,7 +10,7 @@ Companion to two prior artifacts:
 
 This repo asks the next, harder question: **can an agentic reasoning system match prompt-based baselines on requirement-level defect detection without fine-tuning — and can its reasoning trace tell us when the gold labels themselves are wrong?**
 
-![Architecture](assets/architecture.svg)
+![Architecture](architecture.svg)
 
 ---
 
@@ -75,7 +75,7 @@ Multi-agent system. See architecture below. Multiple LLM calls per prediction.
 
 ## The MARQ system
 
-![Workflow](assets/workflow.svg)
+![Workflow](workflow.svg)
 
 | Agent | Role | LLM call? |
 |---|---|---|

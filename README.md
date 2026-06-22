@@ -2,7 +2,7 @@
 
 > Detect ambiguity defects in industrial software requirements **from the requirement text alone** (no weak-word hint at test time), using a multi-agent system over five small open language models — and use the resulting reasoning traces to **audit the QuRE benchmark itself**.
 
-**Target venue:** ICSE 2027 (Research Track).
+**Target venue:** ICSE 2027 (NIER Track).
 
 Companion to two prior artifacts:
 - *Automatic Prompt Engineering for Requirements Classification* (REFSQ 2025) — studied prompting.

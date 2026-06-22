@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <rect width="980" height="400" fill="#fafbfc"/>
+
+  <text x="490" y="32" font-size="17" font-weight="700" fill="#24292e" text-anchor="middle">Experimental workflow — 4 methods × 5 models × 5 folds → 100 CSVs</text>
+
+  <!-- QuRE input -->
+  <rect x="20" y="80" width="130" height="60" rx="10" fill="#ffffff" stroke="#0366d6" stroke-width="2"/>
+  <text x="85" y="108" font-size="12" font-weight="700" fill="#0366d6" text-anchor="middle">QuRE.csv</text>
+  <text x="85" y="125" font-size="10" fill="#586069" text-anchor="middle">2,187 rows → 1,989 req</text>
+
+  <line x1="150" y1="110" x2="180" y2="110" stroke="#586069" stroke-width="2"/>
+  <polygon points="178,106 188,110 178,114" fill="#586069"/>
+
+  <!-- data_prep.py -->
+  <rect x="190" y="80" width="140" height="60" rx="10" fill="#fff8e6" stroke="#e69138" stroke-width="2"/>
+  <text x="260" y="105" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">data_prep.py</text>
+  <text x="260" y="121" font-size="10" fill="#586069" text-anchor="middle">5-fold stratified</text>
+  <text x="260" y="134" font-size="10" fill="#586069" text-anchor="middle">30% pool / 70% test</text>
+
+  <line x1="330" y1="110" x2="360" y2="110" stroke="#586069" stroke-width="2"/>
+  <polygon points="358,106 368,110 358,114" fill="#586069"/>
+
+  <!-- 5 folds box -->
+  <rect x="370" y="50" width="240" height="120" rx="10" fill="#ffffff" stroke="#24292e" stroke-width="1.5"/>
+  <text x="490" y="72" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">Per fold (×5):</text>
+
+  <rect x="385" y="85" width="100" height="34" rx="6" fill="#9900ff" opacity="0.12" stroke="#9900ff"/>
+  <text x="435" y="100" font-size="10" font-weight="600" fill="#24292e" text-anchor="middle">pool (596)</text>
+  <text x="435" y="113" font-size="9" fill="#586069" text-anchor="middle">retrieval source</text>
+
+  <rect x="495" y="85" width="100" height="34" rx="6" fill="#0366d6" opacity="0.12" stroke="#0366d6"/>
+  <text x="545" y="100" font-size="10" font-weight="600" fill="#24292e" text-anchor="middle">test (1393)</text>
+  <text x="545" y="113" font-size="9" fill="#586069" text-anchor="middle">predictions</text>
+
+  <text x="490" y="142" font-size="10" fill="#586069" text-anchor="middle">stratified by requirement-level label</text>
+  <text x="490" y="158" font-size="10" fill="#586069" text-anchor="middle">(StratifiedShuffleSplit)</text>
+
+  <!-- arrow to method grid -->
+  <line x1="610" y1="110" x2="640" y2="110" stroke="#586069" stroke-width="2"/>
+  <polygon points="638,106 648,110 638,114" fill="#586069"/>
+
+  <!-- 4 methods column -->
+  <rect x="650" y="55" width="150" height="160" rx="10" fill="#e8f0fe" stroke="#0366d6" stroke-width="1.5"/>
+  <text x="725" y="74" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">4 methods</text>
+  <rect x="660" y="84" width="130" height="26" rx="5" fill="#ffffff" stroke="#d1d5da"/>
+  <text x="725" y="101" font-size="10" fill="#24292e" text-anchor="middle">Zero-shot</text>
+  <rect x="660" y="114" width="130" height="26" rx="5" fill="#ffffff" stroke="#d1d5da"/>
+  <text x="725" y="131" font-size="10" fill="#24292e" text-anchor="middle">Few-shot (k=5)</text>
+  <rect x="660" y="144" width="130" height="26" rx="5" fill="#ffffff" stroke="#d1d5da"/>
+  <text x="725" y="161" font-size="10" fill="#24292e" text-anchor="middle">CoT few-shot (k=5)</text>
+  <rect x="660" y="174" width="130" height="26" rx="5" fill="#38761d" opacity="0.18" stroke="#38761d" stroke-width="1.5"/>
+  <text x="725" y="191" font-size="10" font-weight="700" fill="#24292e" text-anchor="middle">MARQ (ours)</text>
+
+  <line x1="800" y1="135" x2="820" y2="135" stroke="#586069" stroke-width="2"/>
+  <text x="810" y="125" font-size="11" font-weight="700" fill="#586069" text-anchor="middle">×</text>
+
+  <!-- 5 models column -->
+  <rect x="820" y="55" width="140" height="160" rx="10" fill="#fff8e6" stroke="#e69138" stroke-width="1.5"/>
+  <text x="890" y="74" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">5 LLMs</text>
+  <text x="890" y="93" font-size="9" fill="#586069" text-anchor="middle">Qwen-1.5B</text>
+  <text x="890" y="108" font-size="9" fill="#586069" text-anchor="middle">Qwen-7B</text>
+  <text x="890" y="123" font-size="9" fill="#586069" text-anchor="middle">Llama-3.2-3B</text>
+  <text x="890" y="138" font-size="9" fill="#586069" text-anchor="middle">Gemma-2-2B</text>
+  <text x="890" y="153" font-size="9" fill="#586069" text-anchor="middle">Phi-3.5-mini</text>
+  <text x="890" y="178" font-size="9" font-style="italic" fill="#586069" text-anchor="middle">3 sizes</text>
+  <text x="890" y="192" font-size="9" font-style="italic" fill="#586069" text-anchor="middle">4 families</text>
+  <text x="890" y="206" font-size="9" font-style="italic" fill="#586069" text-anchor="middle">all open weights</text>
+
+  <!-- arrows down to outputs -->
+  <line x1="725" y1="218" x2="725" y2="248" stroke="#586069" stroke-width="2"/>
+  <polygon points="721,246 725,256 729,246" fill="#586069"/>
+
+  <!-- 100 CSVs -->
+  <rect x="610" y="258" width="230" height="60" rx="10" fill="#ffffff" stroke="#24292e" stroke-width="2"/>
+  <text x="725" y="282" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">100 per-prediction CSVs</text>
+  <text x="725" y="298" font-size="10" fill="#586069" text-anchor="middle">gold · pred · reasoning · tokens · latency</text>
+  <text x="725" y="312" font-size="10" font-weight="700" fill="#38761d" text-anchor="middle">~140,000 prediction rows</text>
+
+  <!-- output 1: tables -->
+  <line x1="610" y1="288" x2="430" y2="288" stroke="#586069" stroke-width="2"/>
+  <polygon points="430,284 420,288 430,292" fill="#586069"/>
+
+  <rect x="250" y="248" width="170" height="80" rx="10" fill="#e8f5e8" stroke="#38761d" stroke-width="1.5"/>
+  <text x="335" y="272" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">metrics.py</text>
+  <text x="335" y="290" font-size="10" fill="#586069" text-anchor="middle">F1 · bootstrap CIs</text>
+  <text x="335" y="304" font-size="10" fill="#586069" text-anchor="middle">McNemar · per weak word</text>
+  <text x="335" y="320" font-size="9" font-style="italic" fill="#38761d" text-anchor="middle">→ paper tables (RQ1–4)</text>
+
+  <!-- output 2: RQ5 sampler -->
+  <line x1="725" y1="318" x2="725" y2="348" stroke="#586069" stroke-width="2"/>
+  <polygon points="721,346 725,356 729,346" fill="#586069"/>
+
+  <rect x="610" y="350" width="230" height="40" rx="10" fill="#fde7e7" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="725" y="370" font-size="12" font-weight="700" fill="#24292e" text-anchor="middle">rq5_sampler.py</text>
+  <text x="725" y="384" font-size="9" font-style="italic" fill="#cc0000" text-anchor="middle">→ ~150 disagreements for human study</text>
+</svg>

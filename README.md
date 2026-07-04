@@ -88,6 +88,8 @@ Hyperparameters (k=5 for retrieval, prompt wording, agent loop counts) are **fix
 
 All four methods produce a reasoning string for every prediction. The reasoning is logged in the per-prediction CSV — both for the cost analysis and, crucially, for RQ6.
 
+> **Every prompt used by every method and agent is reproduced verbatim in [`PROMPTS.md`](PROMPTS.md)**, together with the fixed decoding settings and per-call token budgets. Prompts are set once, before any runs, and held constant across folds and models.
+
 ### 1. Zero-shot
 Single LLM call. Prompt asks for a brief one-sentence reasoning before the verdict.
 
@@ -166,6 +168,8 @@ This RQ is the move that makes the paper interesting beyond the algorithmic cont
 ```
 .
 ├── README.md
+├── MOTIVATION.md         # hypothesis + running example + per-agent rationale
+├── PROMPTS.md            # verbatim prompts for every method and agent
 ├── requirements.txt
 ├── data_prep.py          # QuRE → requirement-level, 5-fold 30/70 CV
 ├── retrieval.py          # dense retriever over the pool

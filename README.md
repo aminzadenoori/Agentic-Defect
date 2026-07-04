@@ -30,7 +30,7 @@ We reformulate to the requirement level:
 
 > A requirement is `defect` if *any* of its annotated weak-word instances is `defect`. It is `ok` only if *all* are `ok`.
 
-At test time, methods receive **only the requirement text**. The weak-word annotation is hidden — accessible only inside the example pool used for in-context learning.
+At test time, **every** method — the baselines included — receives **only the requirement text**. The weak-word annotation for the test item is hidden from all prompts; it is accessible only inside the example pool used for in-context learning (shown identically to the baselines and to MARQ's retriever). The baselines must therefore find and reason about the vague term themselves, exactly as MARQ's scanner does — this is what makes the comparison fair.
 
 ---
 

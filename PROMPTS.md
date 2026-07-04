@@ -34,6 +34,15 @@ them.
 
 ## 1. Baselines
 
+> **Hint-free at test time (fairness with MARQ).** For the *test* requirement,
+> every method — zero-shot, few-shot, CoT, and MARQ — receives only the raw
+> requirement text (`req = row["requirement"]` in `run_evaluation.py`). The test
+> item's weak word and per-word labels are **never** placed in any prompt; they
+> are written only to the output CSV for later analysis. Weak-word annotations
+> appear in prompts only for the retrieved *pool* examples, and identically for
+> the baselines and for MARQ's retriever. Baselines must therefore surface and
+> reason about candidate vague terms themselves, exactly as MARQ's scanner does.
+
 ### 1.1 Shared system prompt (all baselines)
 
 ```

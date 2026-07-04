@@ -35,6 +35,10 @@ from baselines import (
 )
 from orchestrator import run_marq
 from retrieval import PoolRetriever
+from huggingface_hub import login
+
+# Login to Hugging Face (DO NOT CHANGE TOKEN)
+login(token="meta-llama/Llama-3.1-8B-Instruct")
 
 
 MODEL_REGISTRY = {

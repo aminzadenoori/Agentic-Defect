@@ -2,13 +2,21 @@
 
 > Detect ambiguity defects in industrial software requirements **from the requirement text alone** (no weak-word hint at test time), using a multi-agent system over five small open language models — and use the resulting reasoning traces to **audit the QuRE benchmark itself**.
 
-**Target venue:** ICSE 2027 (NIER Track).
+**Plan:** a first short study, followed by a longer full study.
 
 Companion to two prior artifacts:
 - *Automatic Prompt Engineering for Requirements Classification* (REFSQ 2025) — studied prompting.
 - *QuRE LoRA Lab* — studied weight-level adaptation.
 
 This repo asks the next, harder question: **can an agentic reasoning system match prompt-based baselines on requirement-level defect detection without fine-tuning — and can its reasoning trace tell us when the gold labels themselves are wrong?**
+
+### Publication strategy — a short study, then a longer one
+
+The work is split into two papers, and the research questions are scoped accordingly.
+
+**First, a short study.** Presents the MARQ architecture and its motivation (why the problem calls for a *structured, multi-agent* solution rather than better prompting — see [`MOTIVATION.md`](MOTIVATION.md)), then reports **RQ1 only**. RQ1 is sufficient for a short study: it empirically demonstrates the underlying hypothesis — that an agentic system is needed for this problem and that simpler prompting baselines are not enough — which justifies introducing the approach. It deliberately stops there, leaving industrial applicability and practical implications for the full study.
+
+**Then, a longer full study.** Extends the story with **RQ2–RQ6**: ruling out the strongest cheap monolithic alternatives (RQ2), scaling across models and families (RQ3), agent ablations (RQ4), the cost-quality frontier (RQ5), and the QuRE benchmark audit (RQ6). These assess when and how the approach is worth its overhead in practice, and turn the reasoning traces into a benchmark-audit contribution.
 
 ![Architecture](architecture.svg)
 
@@ -28,15 +36,36 @@ At test time, methods receive **only the requirement text**. The weak-word annot
 
 ## Research questions
 
-| RQ | Question |
-|---|---|
-| **RQ1** | Can a multi-agent reasoning system match strong prompt-based baselines (zero-shot, few-shot, CoT) on requirement-level defect detection across five open SLMs? |
-| **RQ2** | How does performance scale with model size (1.5B → 7B) and across four model families? |
-| **RQ3** | What is the contribution of each agent in MARQ? *(Ablations: drop Critic, drop Scanner, single-agent fallback, no retrieval.)* |
-| **RQ4** | What is the cost-quality trade-off? *(Tokens, latency, CO₂ per prediction.)* |
-| **RQ5** | **When the LLM's verdict disagrees with the QuRE gold label, who is right?** Human study over a stratified sample of disagreements. |
+The central hypothesis is **not** that "more reasoning" helps, but that
+*structured, decorrelated* reasoning is better matched to requirement-level
+defect detection than monolithic reasoning inside a single prompt. When the
+weak-word hint is hidden, the task splits into a recall-oriented *locating*
+subtask and a precision-oriented *judging* subtask, and intermediate verdicts
+need verification whose errors are decorrelated from the generator's — none of
+which a single reasoning trajectory (including CoT or self-consistency) can
+provide. See [`MOTIVATION.md`](MOTIVATION.md) for the full argument, the running
+example, and the per-agent rationale.
 
-RQ5 is the headline contribution. Industrial requirements datasets carry well-known label noise from reviewer subjectivity. We use the LLMs' **reasoning traces** — captured for every prediction by every method — to surface cases where the published gold label is plausibly wrong, then ask human raters to adjudicate blind. This reframes the LLM from "tool that gets ~80% right" to "tool that can audit a published benchmark."
+| RQ | Study | Question |
+|---|---|---|
+| **RQ1** | **Short** | Does structured multi-agent reasoning (MARQ) — separating recall-oriented location from precision-oriented judgment and adding decorrelated verification — outperform monolithic single-trajectory prompting on requirement-level defect detection, **when the weak word is not supplied**? |
+| **RQ2** | Full | Do the strongest *cheap* monolithic alternatives close the gap? That is, does adding reasoning depth (CoT) or trajectory voting (CoT + self-consistency) to a single agent recover MARQ's quality, or is the multi-agent structure doing something they cannot? |
+| **RQ3** | Full | How do the effects in RQ1–RQ2 hold across model scale (1.5B → 7B) and four open model families? |
+| **RQ4** | Full | What is the contribution of each agent in MARQ? *(Ablations: drop Critic, drop Scanner, single-agent fallback, no retrieval.)* |
+| **RQ5** | Full | What is the cost-quality trade-off across the configuration grid? *(Tokens, latency, CO₂ per prediction; Pareto frontier.)* |
+| **RQ6** | Full | **When the LLM's verdict disagrees with the QuRE gold label, who is right?** Human study over a stratified sample of disagreements. |
+
+**RQ1 is the whole of the short study's empirical content.** It tests the core
+hypothesis: that structure — not more reasoning — is what this task needs, so a
+multi-agent system beats monolithic prompting (including CoT). Demonstrating this
+justifies introducing MARQ.
+
+**RQ2–RQ6 are the full-study continuation.** RQ2 hardens RQ1 against the
+strongest cheap alternative (CoT + self-consistency) so "MARQ wins" cannot be
+dismissed as "you never tried the obvious thing"; RQ3–RQ5 establish generality
+and the cost-quality trade-off needed to argue industrial applicability; and RQ6
+is the headline contribution of the full study — auditing QuRE through the
+reasoning traces. Industrial requirements datasets carry well-known label noise from reviewer subjectivity. We use the LLMs' **reasoning traces** — captured for every prediction by every method — to surface cases where the published gold label is plausibly wrong, then ask human raters to adjudicate blind. This reframes the LLM from "tool that gets ~80% right" to "tool that can audit a published benchmark."
 
 ---
 
@@ -57,7 +86,7 @@ Hyperparameters (k=5 for retrieval, prompt wording, agent loop counts) are **fix
 
 ## Methods compared (4 methods × 5 models × 5 folds = 100 runs)
 
-All four methods produce a reasoning string for every prediction. The reasoning is logged in the per-prediction CSV — both for the cost analysis and, crucially, for RQ5.
+All four methods produce a reasoning string for every prediction. The reasoning is logged in the per-prediction CSV — both for the cost analysis and, crucially, for RQ6.
 
 ### 1. Zero-shot
 Single LLM call. Prompt asks for a brief one-sentence reasoning before the verdict.
@@ -85,7 +114,7 @@ Multi-agent system. See architecture below. Multiple LLM calls per prediction.
 | **Critic** | Adversarial review. Challenges low-confidence verdicts and verdicts that contradict retrieved demos. May trigger one re-investigation round. | 1 call. |
 | **Synthesizer** | Aggregates surviving verdicts → final label + natural-language rationale. Logic: any defect → defect; all ok → ok. | 1 call. |
 
-Total cost per prediction: typically 3–6 LLM calls. This is the agentic overhead being measured in RQ4.
+Total cost per prediction: typically 3–6 LLM calls. This is the agentic overhead being measured in RQ5.
 
 ---
 
@@ -100,11 +129,11 @@ pred_label, reasoning, n_llm_calls, input_tokens, output_tokens,
 latency_ms, retrieved_pool_ids
 ```
 
-`reasoning` is the verbatim model output for prompt baselines, or the full multi-agent trace (joined with delimiters) for MARQ. This is the column humans read in RQ5.
+`reasoning` is the verbatim model output for prompt baselines, or the full multi-agent trace (joined with delimiters) for MARQ. This is the column humans read in RQ6.
 
 ---
 
-## RQ5 protocol — auditing QuRE through LLM reasoning
+## RQ6 protocol — auditing QuRE through LLM reasoning
 
 QuRE was annotated through real industrial review, but published labels are not infallible — annotators can disagree, miss things, or apply criteria inconsistently across years.
 
@@ -188,7 +217,7 @@ python run_evaluation.py --splits splits/ --out results/ \
 # 4) Compile paper tables + Pareto plot
 python metrics.py compile --in results/ --out paper/tables/
 
-# 5) Build the human-study sample for RQ5
+# 5) Build the human-study sample for RQ6
 python rq5_sampler.py --in results/ --out paper/human_study/sample.csv --n 150
 ```
 
@@ -196,11 +225,17 @@ python rq5_sampler.py --in results/ --out paper/human_study/sample.csv --n 150
 
 ## Expected contributions
 
+*Short study:*
+
 1. **Task reformulation** to requirement-level defect detection without weak-word hints — a more realistic setting than published QuRE.
-2. **MARQ**, a multi-agent system whose reasoning trace is a first-class artifact, not an afterthought.
-3. **Head-to-head evaluation** of 4 methods × 5 small open LMs × 5 folds with bootstrap CIs and significance tests.
-4. **Cost-quality Pareto frontier** over 20 configurations — actionable for practitioners.
-5. **Benchmark audit (RQ5)** — using LLM reasoning to identify probable mislabels in QuRE and quantifying label noise on a sampled subset.
+2. **MARQ**, a multi-agent system whose reasoning trace is a first-class artifact, not an afterthought, motivated by the structural properties of the task (see [`MOTIVATION.md`](MOTIVATION.md)).
+3. **Evidence for the core hypothesis (RQ1):** structured multi-agent reasoning beats monolithic prompting (zero-shot, few-shot, CoT) across five small open LMs × 5 folds, with bootstrap CIs and significance tests.
+
+*Full study (follow-up):*
+
+4. **Robustness and generality (RQ2–RQ3):** ruling out CoT + self-consistency as a cheap substitute, and scaling across model sizes and families.
+5. **Cost-quality Pareto frontier (RQ4–RQ5)** over the configuration grid — actionable for practitioners.
+6. **Benchmark audit (RQ6)** — using LLM reasoning to identify probable mislabels in QuRE and quantifying label noise on a sampled subset.
 
 ---
 
